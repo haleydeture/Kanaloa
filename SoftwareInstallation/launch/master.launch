@@ -1,0 +1,22 @@
+<launch>
+   	<node
+	  pkg="nmea_navsat_driver"
+	  type="nmea_serial_driver"
+	  name="gps"
+	>
+	<param name="port" value="/dev/ttyUSB1"/>
+	<param name="baud" value="9600"/>
+
+	</node>
+	
+ 	<include
+          file="$(find razor_imu_9dof)/launch/razor-pub1.launch"
+	/>
+	
+	<node
+		pkg="tf2_ros" type="static_transform_publisher" name="baselink_to_gps_broadcaster"
+		args="0 0 0 0 0 0 map imu_link"
+	>
+	</node>
+
+</launch> 
