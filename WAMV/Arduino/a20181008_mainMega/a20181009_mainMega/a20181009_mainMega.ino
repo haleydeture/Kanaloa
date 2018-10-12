@@ -143,6 +143,11 @@ void setup() {
   I2c.pullup(1);// Set pullup resistors
   I2c.setSpeed(1);
   dac.begin(0x62);
+  //Ensures the DACs will by default send no voltage to the motor controllers.
+  for (int i=0; i<4; i++){
+   tcaselect(i);
+   dac.setVoltage(0,true);
+  }
   // Set serial baud rate
   Serial.begin(57600);
 
