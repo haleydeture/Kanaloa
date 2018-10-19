@@ -26,6 +26,9 @@ and
 
 `<sudo apt install (package name)>`
 
+## Notes 
+1. Persistant usb-serial port names are used for hardware, therefore you must download and edit the 99-usb-serial-names.rules file.
+
 
 ## ROS Topics
 
