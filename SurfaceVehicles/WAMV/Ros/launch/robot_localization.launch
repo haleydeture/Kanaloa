@@ -1,0 +1,8 @@
+<launch>
+<include
+          file="$(find robot_localization)/launch/navsat_transform.launch"
+          file="$(find robot_localization)/launch/ekf.launch"
+	/>
+
+
+</launch>

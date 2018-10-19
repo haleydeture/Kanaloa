@@ -4,28 +4,32 @@
 	  type="nmea_serial_driver"
 	  name="gps"
 	>
-	<param name="port" value="/dev/ttyUSB0"/>
+	<param name="port" value="/dev/wamvGps"/>
 	<param name="baud" value="9600"/>
 	<param name="frame_id" value="map"/>
+	<remap from="fix" to="wamvGps"/>
 
 	</node>
 
 	<include
-          file="$(find usb_cam)/launch/6cams-test.launch"/>
+          file="$(find usb_cam)/launch/6CamsTest.launch"/>
 <!--
 	<node
 	  pkg="urg_node"
 	  type="urg_node"
 	  name="lidar">
 	<param name="ip_address" value="192.168.0.10" />
-
 	</node>
 -->
 	<node
 	  pkg="um7"
 	  type="um7_driver"
 	  name="imu" >
-	<param name="port" value="/dev/wamvImu" />
+	<param name="port" value="/dev/wamvImu"/>
+	<remap from="imu/data" to="wamvImu/data"/>
+	<remap from="imu/mag" to="wamvImu/mag"/>
+	<remap from="imu/temperature" to="wamvImu/temperature"/>
+	<remap from="imu/rpy" to="wamvImu/rpy"/>
 	</node>
 	
 	<node
@@ -49,4 +53,4 @@
 		args="0 0 0 0 0 0 map imu_link"
 	/>
 
-</launch> 
+</launch>
