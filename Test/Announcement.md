@@ -1,6 +1,6 @@
 ## Notes:
 
-**Cold grnd to DACs**
+**Cold Grounds to DACs**
 - Remove black wire on low current box between _LC-TB-5-8_ to _LC-TB-1-9_
 
 **No Connection L4-H4**
@@ -59,7 +59,33 @@ Grounds follows the following path (read list from top to bottom, it goes from h
 - 4.) Forward/Rev Contactors
   - 5 signals
  
+ ## Digital signals between LC Box and HC Box to be isolated
+- a) Voltage divider output _(1 opto-isolater)_
+  - I) Voltage divider protoboard would need to be moved to the HC box and would require its own Arduino
+- b) Input to controllers as digital signal _(4 opto-isolaters)_
+  - II) PWM circuits would need to be moved to the HC box
+- c) Kill Arduino _(2 opto-isolators)_
+- d) Rev/FWD Contactors _(5 opto-isolators)_
+- e) (possibly) 3 led signals to antenna pole from kill arduino
+  - May need a new ethernet cable as end wires are getting short.
+  
  
+## Ground connections between Low Current and Hight Current Boxes to be removed to a new common ground
+- a) Voltage Divider
+  - 10 AWG black/red in High Current Box connects to Arduino Digital Output to HC-TB-2-3
+  - LC Box remove 22 AWG ground wire to LC-TB-3-9
+  - Connect input to a digital pin, not A0 at LC-TB-5-5
+  - Add code to new Arduino
+  - Change voltage read code in main Arduino
+- b) Remove motor controller control circuit wiring ground at HC-TB-1-1
+- c) Kill Arduino -> move V to new common HC box ground (?)
+
+###### Low pass filters ######
+To be added to:
+- Motor Controllers (4 Filters at 500Hz)
+- Transmitters (8 (?) Filters at 50Hz)
+- (Last resort) All digital highs and lows
+  
  
  
  
