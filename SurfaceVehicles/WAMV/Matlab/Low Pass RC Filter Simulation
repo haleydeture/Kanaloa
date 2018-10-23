@@ -1,0 +1,71 @@
+
+syms t w p
+
+% Circuit Properties
+Co=10.e-6;  % Capacitor Value
+R=1000;     % Resistor Value
+
+% Signal Properties
+f=500;  % Signal frequency
+T=1/f;  % Signal Period
+f1=1;   % 1st signal for Fourier Series <0,a>
+f2=0;   % 2nd signal for Fourier Series <a,T>
+N=50;   % Number of iterations for Fourier Series Representation of PWM signal
+
+% Graph Viewing Properties
+periods=50; % How many periods to view on the plots
+
+% Low Pass Filter Transfer Function (function of frequency)
+H=1/(1i*w*Co*R+1);
+
+% Input Signal Creation (Fourier Series)
+vi1=5*fseries(t,25,f,f1,f2,N)*heaviside(t); % 25% Duty Cycle
+vi2=5*fseries(t,50,f,f1,f2,N)*heaviside(t); % 50% Duty Cycle
+vi3=5*fseries(t,75,f,f1,f2,N)*heaviside(t); % 75% Duty Cycle
+
+% Output Signal Creation (After Passing through the Filter)
+vo1=filterWithH(vi1,H); % 25% Duty Cycle
+vo2=filterWithH(vi2,H); % 50% Duty Cycle
+vo3=filterWithH(vi3,H); % 75% Duty Cycle
+
+% Generation of plots(pwm's of %25,%50,%75 and there corrisponding outputs)
+figure(1);
+subplot(311);
+fplot(real(vo1),[0 periods*T]); hold on
+fplot(vi1,[0 periods*T]); hold off
+title('25% Duty Cycle');
+xlabel('t (s)');
+ylabel('Volts');
+subplot(312); 
+fplot(vo2,[0 periods*T]); hold on
+fplot(vi2,[0 periods*T]); hold off
+title('50% Duty Cycle');
+xlabel('t (s)');
+ylabel('Volts');
+subplot(313); 
+fplot(vo3,[0 periods*T]); hold on
+fplot(vi3,[0 periods*T]); hold off
+title('75% Duty Cycle');
+xlabel('t (s)');
+ylabel('Volts');
+
+% Creating a function of %Duty-Cycle for Min and Max values of Output Signal
+viP=symfun(5*fseries(t,p,f,f1,f2,N),[t,p]);
+ViP=fourier(viP(t,p),t,w);
+VoP=ViP*H;
+voP=symfun(ifourier(VoP,w,t),[t,p]);
+
+MAX=voP((p*T/100)+(periods*T),p);
+MIN=voP(periods*T,p);
+
+% Generating Plot for %Duty-Cycle to output amplitude functions
+figure(2);
+fplot(p,real(MAX),[0 100]); hold on
+fplot(p,real(MIN),[0 100]); hold off
+title('%Duty-Cycle to output Amplitude(max,min)');
+xlabel('%Duty-Cycle');
+ylabel('Vo (V)');
+
+
+
+
