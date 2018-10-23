@@ -1,0 +1,13 @@
+function Out = filterWithH(input,Hfreq)
+%filterWithH
+%   input = input signal in the time domain
+%   Hfreq = transfer function of filter in the frequency domain
+%   Out   = output signal in time domain after input signal passes through
+%   Hfreq
+
+Input=fourier(input); % Convert the input signal into its frequency domain
+Output=Input*Hfreq;   % Output signal in its frequency domain
+Out=ifourier(Output); % Output signal in its time domain
+
+end
+
