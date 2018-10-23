@@ -1,0 +1,23 @@
+function out = fseries(t,P,f,f1,f2,N)
+%fseries will generate a Fourier series signal with N iterations of said
+%Fourier series.
+%   t is a symbolic variable for time.
+%   P is the %Duty Cycle;   f1 is the signal for 1st part of %DutyCycle.
+%                           f2 is the signal for 2nd part of %DutyCycle.
+%   N is the number of iterations if the Fourier Series for the signal.
+%   f is the frequency of the signal.
+
+T=1/f;      % Period of signal
+a=P*T/100;  % Duration of period that f1 is active (T-a = Duration for f2)
+
+ao=(1/T)*(int(f1,t,0,a)+int(f2,t,a,T));    % DC component of Fourier series
+vi=ao;
+
+% Following are the next components of the Fourier series
+for n=1:N
+    an=(2/T)*(int(f1*cos(n*2*pi*f*t),t,0,a)+int(f2*cos(n*2*pi*f*t),t,a,T));
+    bn=(2/T)*(int(f1*sin(n*2*pi*f*t),t,0,a)+int(f2*sin(n*2*pi*f*t),t,a,T));
+    vi=vi+an*cos(n*2*pi*f*t)+bn*sin(n*2*pi*f*t);
+end
+
+out = vi;
