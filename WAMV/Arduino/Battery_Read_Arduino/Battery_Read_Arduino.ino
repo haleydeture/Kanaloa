@@ -60,7 +60,7 @@ void readMainBatteryVoltage() {
 //    Serial.println("Setting voltMain = 50 for debugging purposes...");
     voltMain = 50;
   }
-int analogPWMvalue = map(voltMain,0,50,0,256);
+int analogPWMvalue = map(voltMain,0,50,0,255);
 analogWrite(AnalogPWMPin, analogPWMvalue);
 }
 
