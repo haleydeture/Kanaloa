@@ -7,7 +7,9 @@ void readMainBatteryVoltage() {
   unsigned long maxlength= 2041; //Max length to measure the length of a signal  
 
   //Read PWM signal from battery Arduino
-  byte PWMmainVoltagepin = A0;
+  byte PWMmainVoltagepin = 1;
+  pinMode(PWMmainVoltagepin, OUTPUT);
+  //Lines 10 and 11 would probably be in setup
   int mainVoltagePWM = pulseIn(PWMmainVoltagepin, HIGH, maxlength);
   
   //The two cases below are in case the duty cycle of the PWM signal is either 0% (OV) or 100% (50V)
@@ -18,5 +20,5 @@ void readMainBatteryVoltage() {
   mainVoltagePWM=0; //No more voltage in battery
   }
   //convert the PWM pulse length as a main Voltage value
-  mainVolt=map(mainVoltagePWM, 0, 1023, 0, 50);
+  mainVolt=map(mainVoltagePWM, 0, 2041, 0, 49);
   }
