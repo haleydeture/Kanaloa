@@ -8,9 +8,8 @@
 const byte voltMainPin = A1; //Analog Input Pin
 const byte AnalogPWMPin = A2; //Analog Output pin
 
-void setup() {
-  // put your setup code here, to run once:
-
+void setup(){
+  //This does nothing....
 }
 
 void loop() {
@@ -22,13 +21,12 @@ readMainBatteryVoltage();
 void readMainBatteryVoltage() {
   // Reads and smooths battery voltage by taking multiple analogReads and taking the median.
   // Note that reading is still very rough (+/-5V) even when doing this.
-
-  float calib = 0.062;
-  unsigned long total = 0;
   float voltMain;
+  float calib = 0.0505;
+  unsigned long total = 0;
   int voltMainRawMean = 0;
   int voltMainRawMedian = 0;
-  const unsigned int nReadings = 50;
+  const unsigned int nReadings = 10000;
   int readings[nReadings];
 
   // Instantiate readings array with zeros
@@ -41,7 +39,7 @@ void readMainBatteryVoltage() {
     total = total - readings[thisReading];
     readings[thisReading] = analogRead(voltMainPin);
     total = total + readings[thisReading];
-    delay(1);
+    delayMicroseconds(100);
   }
 
   // Sort readings
@@ -55,13 +53,15 @@ void readMainBatteryVoltage() {
   voltMain = voltMainRawMedian * calib;         // convert voltMainRaw to voltMainRaw
 
   // Catching code for zero read voltage
-  if (voltMain < 0.05 && voltMain > -0.05) {
-//    Serial.println("CAUTION: Main battery voltage not detected!  Main battery is probably not plugged in!");
-//    Serial.println("Setting voltMain = 50 for debugging purposes...");
+  if (voltMain < 5 && voltMain > -5) {
+    Serial.println("CAUTION: Main battery voltage not detected!  Main battery is probably not plugged in!");
+    Serial.println("Setting voltMain = 50 for debugging purposes...");
     voltMain = 50;
   }
-int analogPWMvalue = map(voltMain,0,50,0,255);
-analogWrite(AnalogPWMPin, analogPWMvalue);
+  
+  // Send value to main Arduino as PWM signal
+  int analogPWMvalue = map(voltMain,0,50,0,255);
+  analogWrite(AnalogPWMPin, analogPWMvalue);
 }
 
 void sortArray(int a[], int size) {
