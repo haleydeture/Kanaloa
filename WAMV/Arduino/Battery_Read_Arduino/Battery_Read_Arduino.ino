@@ -5,8 +5,8 @@
  * of the battery and sends a PWM signal to the main Arduino
  */
 
-const byte voltMainPin = A1; //Analog Input Pin
-const byte AnalogPWMPin = A2; //Analog Output pin
+const byte voltMainPin = A0; //Analog Input Pin
+const byte AnalogPWMPin = A1; //Analog Output pin
 
 void setup(){
   //This does nothing....
